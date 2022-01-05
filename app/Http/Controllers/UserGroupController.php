@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
-class UserController extends Controller
+class UserGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-        return view('user.index', compact('roles'));
+        $userPermission = Permission::user()->get();
+        $userGroupPermission = Permission::userGroup()->get();
+        return view('usergroup.index', compact('userPermission','userGroupPermission'));
     }
 
     /**
