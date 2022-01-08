@@ -67,6 +67,7 @@
         <div class="modal-body">
           <!-- Multi Columns Form -->
           <form class="row g-3" id="patient-form">
+            @csrf
             <div class="col-md-12">
               <label for="inputName5" class="form-label">Name</label>
               <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
@@ -89,7 +90,6 @@
                 <option selected>Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-                <option value="Transgender">Transgender</option>
               </select>
             </div>
             <div class="col-md-6">
@@ -114,6 +114,67 @@
         </div>
       </div>
     </div>
+</div><!-- End Large Modal-->
+
+
+<div class="modal fade" id="editPatientModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update new Patient</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Multi Columns Form -->
+        <form class="row g-3" id="edit-patient-form">
+          @csrf
+          <input type="hidden" class="form-control" name="editPatientId" id="editPatientId">
+          <div class="col-md-12">
+            <label for="inputName5" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editName" name="editName" placeholder="Enter Name">
+          </div>
+          <div class="col-md-12">
+            <label for="address" class="form-label">Address</label>
+            <textarea type="text" class="form-control" id="editAddress" name="editAddress" placeholder="Enter Address"></textarea>
+          </div>
+          <div class="col-md-12">
+              <label for="contactNumber" class="form-label">Contact number</label>
+              <input type="text" class="form-control" id="editContact_num" name="editContact_num" placeholder="Enter contact number">
+          </div>
+          <div class="col-md-6">
+            <label for="Age" class="form-label">Age</label>
+            <input type="number" class="form-control" id="editAge" name="editAge" placeholder="Enter Age">
+          </div>
+          <div class="col-md-6">
+            <label for="gender" class="form-label">gender</label>
+            <select class="form-select" name="editGender" id="editGender" >
+              <option selected>Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+              <label for="BloodType" class="form-label">Blood Type</label>
+              <select class="form-select" name="editblood_type" id="editblood_type" >
+                <option selected>Select Blood Type</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+        </form><!-- End Multi Columns Form -->
+      </div>
+      <div class="modal-footer">
+          <button id="edit-patient" type="button" class="btn btn-primary" onclick="updatePatient()">Submit</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
 </div><!-- End Large Modal-->
 
 <!-- Patient Delete Modal -->
@@ -181,6 +242,55 @@ $('#add-patient').on('click', function(e) {
   });  
 });
 
+//get client info ,fill the edit modal form,
+function showServiceEdit(id){
+  $.ajax({
+      type: "GET",
+      url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
+      success: function(response) {
+        if(response.code == 200) {
+          $("#editPatientId").attr("value",id);
+          $("#editName").attr("value",response.data.name);
+          $("#editAddress").val(response.data.address);
+          $("#editContact_num").attr("value" ,response.data.contact_num);
+          $("#editAge").attr("value" ,response.data.age);
+          $("#editGender").val(response.data.gender).change();
+          $("#editblood_type").val(response.data.blood_type).change();
+          $("#editPatientModal").modal("toggle");
+        }
+      }
+  });
+}
+
+//update patient
+function updatePatient() {
+  var form = $("#edit-patient-form").serialize();
+  $.ajax({
+    type: "PUT",
+    url: '{{ url(route('patient.update','')) }}/' + $('#editPatientId').val(),
+    data: form,
+    success: function(response) { 
+      $("#editPatientModal").modal("hide");
+      $('#edit-patient-form')[0].reset();
+      if(response.code == 200){
+        swal({
+              title: 'Success',
+              text: 'Patient Updated Successfully!',
+              icon: 'success',
+              buttons: true
+          }).then(function(value) {
+              if(value === true) {                        
+                reloadTable();
+              }
+          });
+      } 
+    },
+    error: function(response){
+      swal("Oops!",response.responseJSON.message , "error");
+    }
+  });  
+}
+
 function showPatientDelete(id){
   $.ajax({
       type: "GET",
@@ -243,7 +353,7 @@ $(document).ready( function () {
         {
           "data": null,
           "render": function (data,type, row) {
-            return '<button id="editBtn" class="btn btn-success" onclick="showEmployeeEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
+            return '<button id="editBtn" class="btn btn-success" onclick="showServiceEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
           }
         },
         {

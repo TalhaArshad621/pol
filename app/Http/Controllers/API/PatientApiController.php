@@ -56,8 +56,7 @@ class PatientApiController extends Controller
             'address' => 'required',
             'contact_num' => 'required',
             'gender' => 'required',
-            'blood_type' => 'required',
-            'age' => 'required'
+            'blood_type' => 'required'
         ]);
         try {
             $patient = new Patient;
@@ -94,7 +93,7 @@ class PatientApiController extends Controller
     {
         try
         {
-            $patient = Patient::get('id','name','age','gender','blood_type','contact_num','address')->where('id',$id);
+            $patient = Patient::select('id','name','age','gender','blood_type','contact_num','address')->find($id);
             return response()->json([
                 'message' => 'Patient info',
                 'code' => 200,
@@ -130,7 +129,39 @@ class PatientApiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        $request->validate([
+            'editName' => 'required',
+            'editAge' => 'required',
+            'editAddress' => 'required',
+            'editContact_num' => 'required',
+            'editGender' => 'required',
+            'editblood_type' => 'required',
+        ]);
+        try {
+            $patient = Patient::find($id);
+            $patient->name = $request->editName;
+            $patient->address = $request->editAddress;
+            $patient->contact_num = $request->editContact_num;
+            $patient->gender = $request->editGender;
+            $patient->age = $request->editAge;
+            $patient->blood_type = $request->editblood_type;
+            $patient->save();
+            if ($patient) {
+                DB::commit();
+                return response()->json([
+                    'message' => 'Patient updated',
+                    'status' => 200,
+                    'data' => $patient
+                ]);
+            }
+        } catch (\Throwable $e) {
+            DB::rollback();
+            return response()->json([
+                'status' => '202',
+                'data' => $e
+            ]);
+        }
     }
 
     /**

@@ -37,3 +37,4 @@ Route::get('/patients', [PatientApiController::class, 'index'])->name('patients.
 Route::post('/patients', [PatientApiController::class, 'store'])->name('patient.create');
 Route::get('/patients/{id}', [PatientApiController::class, 'show'])->name('patient.get');
 Route::delete('/patients/{id}', [PatientApiController::class, 'destroy'])->name('patient.destroy');
+Route::put('/patients/{id}', [PatientApiController::class, 'update'])->name('patient.update');
