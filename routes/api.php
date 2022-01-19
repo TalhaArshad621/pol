@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\PatientApiController;
+use App\Http\Controllers\API\RequestApiController;
 use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\UserGroupApiController;
 use Illuminate\Http\Request;
@@ -38,3 +39,7 @@ Route::post('/patients', [PatientApiController::class, 'store'])->name('patient.
 Route::get('/patients/{id}', [PatientApiController::class, 'show'])->name('patient.get');
 Route::delete('/patients/{id}', [PatientApiController::class, 'destroy'])->name('patient.destroy');
 Route::put('/patients/{id}', [PatientApiController::class, 'update'])->name('patient.update');
+
+// Request Api
+Route::get('/requests', [RequestApiController::class, 'index'])->name('requests.index');
+Route::post('/requests', [RequestApiController::class, 'store'])->name('request.create');

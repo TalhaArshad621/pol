@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserGroupController;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,4 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
 Route::get('/usergroup',[UserGroupController::class, 'index'])->name('usergroup.index');
 Route::get('/patient',[PatientController::class , 'index'])->name('patient.index');
+Route::get('/request',[RequestController::class, 'index'])->name('request.index');

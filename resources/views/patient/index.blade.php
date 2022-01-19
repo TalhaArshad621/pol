@@ -30,7 +30,7 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Blood Type</th>
-                        <th>view</th>
+                        <th>Request</th>
                         <th>edit</th>
                         <th>delete</th>
                     </tr>
@@ -42,7 +42,7 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Blood Type</th>
-                        <th>view</th>
+                        <th>Request</th>
                         <th>edit</th>
                         <th>delete</th>
                     </tr>
@@ -200,6 +200,78 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="addNewRequestModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add new Request</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Multi Columns Form -->
+        <form class="row g-3" id="request-form">
+          @csrf
+          <input type="hidden" class="form-control" name="PatientId" id="PatientId">
+          
+          <div class="col-md-12">
+            <label for="inputName5" class="form-label">Name</label>
+            <input type="text" class="form-control" id="requestName" name="requestName" placeholder="Enter Name">
+          </div>
+
+          <div class="row mb-2 mt-3">
+              <div class="col-md-6">
+                  <label for="quantity" class="form-label">Quantity</label>
+                  <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter blood quantity">
+              </div>
+              <div class="col-md-6">
+                  <label for="date" class="form-label">Last Date</label>
+                  <input type="date" class="form-control" id="date" name="date" placeholder="Enter last Date">
+              </div>
+          </div>
+          <div class="row mb-2 mt-3">
+              <div class="col-md-6">
+                  <label for="Age" class="form-label">Age</label>
+                  <input type="number" class="form-control" id="requestAge" name="requestAge" placeholder="Enter Age">
+                </div>
+                <div class="col-md-6">
+                    <label for="BloodType" class="form-label">Blood Type</label>
+                    <select class="form-select" name="requestBlood_type" id="requestBlood_type" >
+                      <option selected>Select Blood Type</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                    </select>
+                  </div>
+          </div>
+
+          <div class="col-md-6">
+            <label for="level" class="form-label">Level</label>
+            <select class="form-select" name="level" id="level">
+              <option value="">Select Level</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+          
+        </form><!-- End Multi Columns Form -->
+      </div>
+      <div class="modal-footer">
+          <button id="add-request" type="button" class="btn btn-primary" onclick="addRequest()">Submit</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div><!-- End Large Modal-->
+
 @endsection
 
 
@@ -260,6 +332,51 @@ function showServiceEdit(id){
         }
       }
   });
+}
+
+//get client info ,fill the edit modal form,
+function showRequestModal(id){
+  $.ajax({
+      type: "GET",
+      url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
+      success: function(response) {
+        if(response.code == 200) {
+          $("#PatientId").attr("value",id);
+          $("#requestName").attr("value",response.data.name);
+          $("#requestAge").attr("value" ,response.data.age);
+          $("#addNewRequestModal").modal("toggle");
+        }
+      }
+  });
+}
+
+//Add Request
+function addRequest() {
+  var form = $("#request-form").serialize();
+  $.ajax({
+    type: "POST",
+    url: '{{ url(route('request.create')) }}',
+    data: form,
+    success: function(response) { 
+      $("#addNewRequestModal").modal("hide");
+      $('#request-form')[0].reset();
+      if(response.status == 200){
+        swal({
+              title: 'Success',
+              text: 'Request Sent Successfully!',
+              icon: 'success',
+              buttons: true
+          }).then(function(value) {
+              if(value === true) {                        
+                reloadTable();
+              }
+          });
+      } 
+    },
+    error: function(response){
+      swal("Oops!",response.responseJSON.message , "error");
+    }
+  });  
 }
 
 //update patient
@@ -347,7 +464,7 @@ $(document).ready( function () {
         {
           "data": null,
             "render": function (data,type, row) {
-            return '<button id="deleteBtn" class="btn btn-success"  value ="'+data.id+ '"><i class="bi bi-eye-fill"></i></button>'
+            return '<button id="requestBtn" class="btn btn-primary" onclick="showRequestModal('+data.id+')"  value ="'+data.id+ '"><i class="bi bi-plus-circle"></i></button>'
           }
         },
         {
@@ -366,7 +483,11 @@ $(document).ready( function () {
           'aoColumnDefs': [{
           'bSortable': false,
           'aTargets': ['nosort']
-        }]
+        }],
+        'columnDefs': [
+            { responsivePriority: 1, targets: 1 },
+            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7 ] },
+        ]
   }); 
 });
 </script>

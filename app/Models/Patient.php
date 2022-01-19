@@ -12,6 +12,6 @@ class Patient extends Model
 
     public function request()
     {
-        return $this->belongsTo('App\Models\Request', 'patient_id', 'id');
+        return $this->belongsTo('App\Models\PatientRequest', 'patient_id', 'id');
     }
 }

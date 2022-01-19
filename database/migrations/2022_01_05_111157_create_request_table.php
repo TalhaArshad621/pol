@@ -13,12 +13,14 @@ class CreateRequestTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('patient_requests', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('patient_id');
+            $table->BigInteger('patient_id')->unsigned();
             $table->integer('amount');
-            $table->integer('status');
+            $table->integer('status')->default(0);
             $table->timestamp('last_date');
+            $table->tinyInteger('level')->unsigned();
+            $table->string('bloodGroup', 10);
             $table->timestamps();
             $table->foreign('patient_id')->references('id')->on('patients');
         });
