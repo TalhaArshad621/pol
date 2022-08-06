@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use App\Models\Location;
 use Illuminate\Http\Request;
-use App\Models\Patient;
 use Exception;
 
-class PatientApiController extends Controller
+class LocationApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,11 +18,14 @@ class PatientApiController extends Controller
     public function index()
     {
         try{
-            $patient = Patient::all('id','name','age','gender','blood_type','contact_num','address');
+            $location = DB::table('locations')
+            ->join('location_codes', 'location_codes.id', '=', 'locations.lc')
+            ->select('locations.id','locations.name','locations.city','location_codes.lc','location_codes.description')
+            ->get();
             return response()->json([
-                'message' => 'Patient List',
+                'message' => 'Campaigns List',
                 'code' => 200,
-                'data' => $patient
+                'data' => $location,
             ]);
         }catch(Exception $e){
             return response()->json([
@@ -51,29 +54,21 @@ class PatientApiController extends Controller
     {
         DB::beginTransaction();
         $validateData = $request->validate([
-            'name' => 'required',
-            'age' => 'required',
-            'address' => 'required',
-            'contact_num' => 'required',
-            'cnic'    => 'required',
-            'gender' => 'required',
-            'blood_type' => 'required'
+            'name'        => 'required',
+            'lc'          => 'required',
+            'city'        => 'required',
         ]);
         try {
-            $patient = new Patient;
-            $patient->name = $request->name;
-            $patient->address = $request->address;
-            $patient->contact_num = $request->contact_num;
-            $patient->cnic = $request->cnic;
-            $patient->gender = $request->gender;
-            $patient->age = $request->age;
-            $patient->blood_type = $request->blood_type;
-            $patient->save();
-            if ($patient) {
+            $location             = new Location;
+            $location->name       = $request->name;
+            $location->lc         = $request->lc;
+            $location->city       = $request->city;
+            $location->save();
+            if ($location) {
                 DB::commit();
                 return response()->json([
                     'status' => 200,
-                    'data' => $patient
+                    'data' => $location
                 ]);
             }
         } catch (\Throwable $e) {
@@ -95,18 +90,18 @@ class PatientApiController extends Controller
     {
         try
         {
-            $patient = Patient::select('id','name','age','gender','blood_type','contact_num','cnic','address')->find($id);
+            $location = Location::select('*')->find($id);
             return response()->json([
-                'message' => 'Patient info',
+                'message' => 'Location info',
                 'code' => 200,
-                'data' => $patient
+                'data' => $location
             ]);
 
         } catch(Exception $e)
         {
             return response()->json([
                 'status' => '202',
-                'data' => $e
+                'data' => $e->getMessage()
             ]);
         }
     }
@@ -134,36 +129,28 @@ class PatientApiController extends Controller
         DB::beginTransaction();
         $request->validate([
             'editName' => 'required',
-            'editAge' => 'required',
-            'editAddress' => 'required',
-            'editContact_num' => 'required',
-            'editCnic'   => 'required',
-            'editGender' => 'required',
-            'editblood_type' => 'required',
+            'editLc' => 'required',
+            'editCity' => 'required',
         ]);
         try {
-            $patient = Patient::find($id);
-            $patient->name = $request->editName;
-            $patient->address = $request->editAddress;
-            $patient->contact_num = $request->editContact_num;
-            $patient->cnic = $request->editCnic;
-            $patient->gender = $request->editGender;
-            $patient->age = $request->editAge;
-            $patient->blood_type = $request->editblood_type;
-            $patient->save();
-            if ($patient) {
+            $location = Location::find($id);
+            $location->name = $request->editName;
+            $location->lc = $request->editLc;
+            $location->city = $request->editCity;
+            $location->save();
+            if ($location) {
                 DB::commit();
                 return response()->json([
-                    'message' => 'Patient updated',
+                    'message' => 'Location updated',
                     'status' => 200,
-                    'data' => $patient
+                    'data' => $location
                 ]);
             }
         } catch (\Throwable $e) {
             DB::rollback();
             return response()->json([
                 'status' => '202',
-                'data' => $e
+                'data' => $e->getMessage()
             ]);
         }
     }
@@ -176,26 +163,6 @@ class PatientApiController extends Controller
      */
     public function destroy($id)
     {
-        DB::beginTransaction();
-        try {
-            $patient = Patient::find($id);
-            $patient->delete();
-            if ($patient) {
-                DB::commit();
-                return response()->json([
-                    "message" => "Patient Deleted",
-                    "code" => 200,
-                    "data" => [
-                        "id" => $patient->id,
-                        "name" => $patient->name
-                    ]
-                ]);
-            }
-        } catch (Exception $e) {
-            DB::rollback();
-            return response()->json([
-                "message" => $e,
-            ]);
-        }
+        //
     }
 }

@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BloodBag;
+use App\Models\Donation;
+use App\Models\Donator;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +27,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $donator = $this->donatorcount();
+        $donation = $this->donationCount();
+        $blood_bags = BloodBag::get();
+        return view('home', compact('donator','donation','blood_bags'));
+    }
+
+    protected function donatorcount(){
+        $data = Donator::whereMonth('created_at', Carbon::now()->month)
+            ->count();
+        return $data;
+    }
+
+    protected function donationCount(){
+        $data = Donation::whereDay('created_at', Carbon::now()->day)
+        ->count();
+        return $data;
     }
 }

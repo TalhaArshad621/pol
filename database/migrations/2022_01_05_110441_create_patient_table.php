@@ -18,6 +18,7 @@ class CreatePatientTable extends Migration
             $table->string('name', 255);
             $table->string('address',255);
             $table->string('contact_num',25);
+            $table->string('cnic',20);
             $table->string('gender',20);
             $table->string('age');
             $table->string('blood_type',20);

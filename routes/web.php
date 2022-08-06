@@ -5,6 +5,11 @@ use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserGroupController;
+use App\Http\Controllers\BBRequestController;
+use App\Http\Controllers\BloodBagController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DonatorController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +31,30 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/user', [UserController::class, 'index'])->name('user.index');
+
 Route::get('/usergroup',[UserGroupController::class, 'index'])->name('usergroup.index');
+
+// Hospital
 Route::get('/patient',[PatientController::class , 'index'])->name('patient.index');
 Route::get('/request',[RequestController::class, 'index'])->name('request.index');
+
+// Blood Bank
+
+Route::get('/b-request',[BBRequestController::class, 'index'])->name('bbrequest.index');
+
+// Donator
+
+Route::get('/donators', [DonatorController::class,'index'])->name('donator.index');
+route::get('/donators/{id}',[DonatorController::class, 'show'])->name('donator.show');
+
+// Donation
+
+Route::get('/donations', [DonationController::class, 'index'])->name('donation.index');
+Route::get('/donate-blood', [DonationController::class, 'create'])->name('donate.blood');
+Route::post('/donation',[DonationController::class, 'store'])->name('donation.store');
+
+// Blood bag
+Route::get('/store',[BloodBagController::class, 'index'])->name('store.index');
+
+// Campaigns
+Route::get('/campaigns',[LocationController::class, 'index'])->name('campaign.index');

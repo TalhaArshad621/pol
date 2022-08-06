@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\BloodBagApiController;
+use App\Http\Controllers\API\DonationApiController;
+use App\Http\Controllers\API\DonatorApiController;
+use App\Http\Controllers\API\LocationApiController;
 use App\Http\Controllers\API\PatientApiController;
 use App\Http\Controllers\API\RequestApiController;
 use App\Http\Controllers\API\UserApiController;
@@ -43,3 +47,20 @@ Route::put('/patients/{id}', [PatientApiController::class, 'update'])->name('pat
 // Request Api
 Route::get('/requests', [RequestApiController::class, 'index'])->name('requests.index');
 Route::post('/requests', [RequestApiController::class, 'store'])->name('request.create');
+
+// Donator api
+Route::get('/donators', [DonatorApiController::class, 'index'])->name('donators.index'); 
+Route::post('/donators',[DonatorApiController::class, 'store'])->name('donator.create');
+Route::get('/donator/{id}',[DonatorApiController::class, 'show'])->name('donator.get');
+
+// Donation
+Route::get('/donation',[DonationApiController::class, 'index'])->name('donations.index');
+
+// Blood Bags 
+Route::get('/bloodBags',[BloodBagApiController::class, 'index'])->name('bloodBag.index');
+
+// Campaign
+Route::post('/campaigns', [LocationApiController::class, 'store'])->name('campaign.store');
+Route::get('/campaigns', [LocationApiController::class, 'index'])->name('campaigns.index');
+Route::get('/campaigns/{id}', [LocationApiController::class, 'show'])->name('campaign.show');
+Route::put('/campaigns/{id}', [LocationApiController::class, 'update'])->name('campaign.update');

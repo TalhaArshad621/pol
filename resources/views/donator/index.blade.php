@@ -8,7 +8,7 @@
     <div class="col p-md-0">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="/patient">Patient</a></li>
+            <li class="breadcrumb-item active"><a href="/donators">Donator</a></li>
         </ol>
     </div>
 </div>
@@ -17,12 +17,12 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Patient Table</h5>
-              <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addNewPatientModal">
-                Add Patient
+              <h5 class="card-title">Donator Table</h5>
+              <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#addNewDonatorModal">
+                Add Donator
               </button>
               <!-- Table with stripped rows -->
-              <table id="patient-table" class="table">
+              <table id="donator-table" class="table">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -30,9 +30,8 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Blood Type</th>
-                        <th>Request</th>
-                        <th>edit</th>
-                        <th>delete</th>
+                        <th>next donation</th>
+                        <th>view</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -42,9 +41,8 @@
                         <th>Age</th>
                         <th>Gender</th>
                         <th>Blood Type</th>
-                        <th>Request</th>
-                        <th>edit</th>
-                        <th>delete</th>
+                        <th>next donation</th>
+                        <th>view</th>
                     </tr>
                 </tfoot>
               </table>
@@ -57,16 +55,16 @@
       </div>
 </div>
 
-<div class="modal fade" id="addNewPatientModal" tabindex="-1">
+<div class="modal fade" id="addNewDonatorModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Add new Patient</h5>
+          <h5 class="modal-title">Add new Donator</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!-- Multi Columns Form -->
-          <form class="row g-3" id="patient-form">
+          <form class="row g-3" id="donator-form">
             @csrf
             <div class="col-md-12">
               <label for="inputName5" class="form-label">Name</label>
@@ -82,7 +80,7 @@
             </div>
             <div class="col-md-12">
                 <label for="contactNumber" class="form-label">CNIC</label>
-                <input type="text" class="form-control" id="cnic" name="cnic" placeholder="Enter cnic number">
+                <input type="text" maxlength="13" class="form-control" id="cnic" name="cnic" placeholder="Enter 13 digit cnic number">
             </div>
             <div class="col-md-6">
               <label for="Age" class="form-label">Age</label>
@@ -113,7 +111,7 @@
           </form><!-- End Multi Columns Form -->
         </div>
         <div class="modal-footer">
-            <button id="add-patient" type="button" class="btn btn-primary">Submit</button>
+            <button id="add-donator" type="button" class="btn btn-primary">Submit</button>
             <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
         </div>
       </div>
@@ -121,18 +119,18 @@
 </div><!-- End Large Modal-->
 
 
-<div class="modal fade" id="editPatientModal" tabindex="-1">
+<div class="modal fade" id="editDonatorModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update new Patient</h5>
+        <h5 class="modal-title">Update new Donator</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <!-- Multi Columns Form -->
-        <form class="row g-3" id="edit-patient-form">
+        <form class="row g-3" id="edit-donator-form">
           @csrf
-          <input type="hidden" class="form-control" name="editPatientId" id="editPatientId">
+          <input type="hidden" class="form-control" name="editDonatorId" id="editDonatorId">
           <div class="col-md-12">
             <label for="inputName5" class="form-label">Name</label>
             <input type="text" class="form-control" id="editName" name="editName" placeholder="Enter Name">
@@ -147,7 +145,7 @@
           </div>
           <div class="col-md-12">
               <label for="contactNumber" class="form-label">CNIC</label>
-              <input type="text" class="form-control" id="editCnic" name="editCnic" placeholder="Enter cnic number">
+              <input type="number" maxlength="13" class="form-control" id="editCnic" name="editCnic" placeholder="Enter 13 digit cnic number">
           </div>
           <div class="col-md-6">
             <label for="Age" class="form-label">Age</label>
@@ -178,7 +176,7 @@
         </form><!-- End Multi Columns Form -->
       </div>
       <div class="modal-footer">
-          <button id="edit-patient" type="button" class="btn btn-primary" onclick="updatePatient()">Submit</button>
+          <button id="edit-donator" type="button" class="btn btn-primary" onclick="updateDonator()">Submit</button>
           <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
@@ -193,92 +191,21 @@
         <h5 class="modal-title" id="deleteModal_Label">Delete</h5>
       </div>
       <div class="modal-body">
-      <form id="PatientDeleteForm" class="form-horizontal" role="form" method="post" action="">
+      <form id="DonatorDeleteForm" class="form-horizontal" role="form" method="post" action="">
         @csrf  
         <div class="mb-3">
-            <input type="hidden" class="form-control" id="patientDeleteID" name="patientDeleteID" required  >
+            <input type="hidden" class="form-control" id="donatorDeleteID" name="donatorDeleteID" required  >
           </div>
           <h5 class="modal-title" id="deleteModal_UserLabel">Delete</h5>
       </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button  id="deleteUserBtn" type="button" class="btn btn-danger" onclick="deletePatient()">Delete</button>
+        <button type="button" class="btn btn-danger" onclick="deleteDonator()">Delete</button>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal fade" id="addNewRequestModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add new Request</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Multi Columns Form -->
-        <form class="row g-3" id="request-form">
-          @csrf
-          <input type="hidden" class="form-control" name="PatientId" id="PatientId">
-          
-          <div class="col-md-12">
-            <label for="inputName5" class="form-label">Name</label>
-            <input type="text" class="form-control" id="requestName" name="requestName" placeholder="Enter Name">
-          </div>
-
-          <div class="row mb-2 mt-3">
-              <div class="col-md-6">
-                  <label for="quantity" class="form-label">Quantity</label>
-                  <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter blood quantity">
-              </div>
-              <div class="col-md-6">
-                  <label for="date" class="form-label">Last Date</label>
-                  <input type="date" class="form-control" id="date" name="date" placeholder="Enter last Date">
-              </div>
-          </div>
-          <div class="row mb-2 mt-3">
-              <div class="col-md-6">
-                  <label for="Age" class="form-label">Age</label>
-                  <input type="number" class="form-control" id="requestAge" name="requestAge" placeholder="Enter Age">
-                </div>
-                <div class="col-md-6">
-                    <label for="BloodType" class="form-label">Blood Type</label>
-                    <select class="form-select" name="requestBlood_type" id="requestBlood_type" >
-                      <option selected>Select Blood Type</option>
-                      <option value="A+">A+</option>
-                      <option value="A-">A-</option>
-                      <option value="B+">B+</option>
-                      <option value="B-">B-</option>
-                      <option value="AB+">AB+</option>
-                      <option value="AB-">AB-</option>
-                      <option value="O+">O+</option>
-                      <option value="O-">O-</option>
-                    </select>
-                  </div>
-          </div>
-
-          <div class="col-md-6">
-            <label for="level" class="form-label">Level</label>
-            <select class="form-select" name="level" id="level">
-              <option value="">Select Level</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-          
-        </form><!-- End Multi Columns Form -->
-      </div>
-      <div class="modal-footer">
-          <button id="add-request" type="button" class="btn btn-primary" onclick="addRequest()">Submit</button>
-          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div><!-- End Large Modal-->
 
 @endsection
 
@@ -288,26 +215,26 @@
 <script>
 // tablereload
 function reloadTable(){
-  $('#patient-table').DataTable().ajax.reload(null,false)
+  $('#donator-table').DataTable().ajax.reload(null,false)
 }
 //add usergroup
-$('#add-patient').on('click', function(e) {
+$('#add-donator').on('click', function(e) {
     e.preventDefault();
-    var form = $("#patient-form").serialize();
+    var form = $("#donator-form").serialize();
 
     $.ajax({
     type: "POST",
-    url: '{{ url(route('patient.create')) }}',
+    url: '{{ url(route('donator.create')) }}',
     data: form,
     success: function(response) {
-      $('#addNewPatientModal').modal('hide');
+      $('#addNewDonatorModal').modal('hide');
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
-      $('#patient-form')[0].reset();
+      $('#donator-form')[0].reset();
         if(response.status == 200) {
             swal({
                 title: 'Success',
-                text: 'Patient Added Successfully!',
+                text: 'Donator Added Successfully!',
                 icon: 'success',
                 buttons: true
             }).then(function(value) {
@@ -316,20 +243,20 @@ $('#add-patient').on('click', function(e) {
                 }
             });
         } else {
-          swal("Oops!", "Patient Not Added!", "error");
+          swal("Oops!", "Donator Not Added!", "error");
         }
     }
   });  
 });
 
 //get client info ,fill the edit modal form,
-function showServiceEdit(id){
+function showDonatorEdit(id){
   $.ajax({
       type: "GET",
       url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
       success: function(response) {
         if(response.code == 200) {
-          $("#editPatientId").attr("value",id);
+          $("#editDonatorId").attr("value",id);
           $("#editName").attr("value",response.data.name);
           $("#editAddress").val(response.data.address);
           $("#editContact_num").attr("value" ,response.data.contact_num);
@@ -337,67 +264,22 @@ function showServiceEdit(id){
           $("#editAge").attr("value" ,response.data.age);
           $("#editGender").val(response.data.gender).change();
           $("#editblood_type").val(response.data.blood_type).change();
-          $("#editPatientModal").modal("toggle");
+          $("#editDonatorModal").modal("toggle");
         }
       }
   });
-}
-
-//get client info ,fill the edit modal form,
-function showRequestModal(id){
-  $.ajax({
-      type: "GET",
-      url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
-      success: function(response) {
-        if(response.code == 200) {
-          $("#PatientId").attr("value",id);
-          $("#requestName").attr("value",response.data.name);
-          $("#requestAge").attr("value" ,response.data.age);
-          $("#addNewRequestModal").modal("toggle");
-        }
-      }
-  });
-}
-
-//Add Request
-function addRequest() {
-  var form = $("#request-form").serialize();
-  $.ajax({
-    type: "POST",
-    url: '{{ url(route('request.create')) }}',
-    data: form,
-    success: function(response) { 
-      $("#addNewRequestModal").modal("hide");
-      $('#request-form')[0].reset();
-      if(response.status == 200){
-        swal({
-              title: 'Success',
-              text: 'Request Sent Successfully!',
-              icon: 'success',
-              buttons: true
-          }).then(function(value) {
-              if(value === true) {                        
-                reloadTable();
-              }
-          });
-      } 
-    },
-    error: function(response){
-      swal("Oops!",response.responseJSON.message , "error");
-    }
-  });  
 }
 
 //update patient
-function updatePatient() {
-  var form = $("#edit-patient-form").serialize();
+function updateDonator() {
+  var form = $("#edit-donator-form").serialize();
   $.ajax({
     type: "PUT",
-    url: '{{ url(route('patient.update','')) }}/' + $('#editPatientId').val(),
+    url: '{{ url(route('patient.update','')) }}/' + $('#editDonatorId').val(),
     data: form,
     success: function(response) { 
-      $("#editPatientModal").modal("hide");
-      $('#edit-patient-form')[0].reset();
+      $("#editDonatorModal").modal("hide");
+      $('#edit-donator-form')[0].reset();
       if(response.code == 200){
         swal({
               title: 'Success',
@@ -417,14 +299,14 @@ function updatePatient() {
   });  
 }
 
-function showPatientDelete(id){
+function showDonatorDelete(id){
   $.ajax({
       type: "GET",
       url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
       success: function(response) {
         if(response.code == 200) {
           $("#deleteModal_Label").html("Delete Patient ");
-          $("#patientDeleteID").attr("value",id);
+          $("#donatorDeleteID").attr("value",id);
           $("#deleteModal_UserLabel").html("Are you sure You want to Delete Patient");
           $("#deleteModal").modal("toggle");
         }
@@ -433,15 +315,15 @@ function showPatientDelete(id){
 }
 
 // Delete Patient
-function deletePatient(){
-  var form = $("#PatientDeleteForm").serialize();
+function deleteDonator(){
+  var form = $("#DonatorDeleteForm").serialize();
   $.ajax({
     type: "DELETE",
-    url: '{{ url(route('patient.destroy','')) }}/'+ $('#patientDeleteID').val(),
+    url: '{{ url(route('patient.destroy','')) }}/'+ $('#donatorDeleteID').val(),
     data: form,
     success: function(response) {
       $('#deleteModal').modal('hide');
-      $('#PatientDeleteForm')[0].reset();
+      $('#DonatorDeleteForm')[0].reset();
       if(response.code == 200 ) {  
         swal({
             title: 'Success',
@@ -461,8 +343,8 @@ function deletePatient(){
 }
 // DataTables
 $(document).ready( function () {    
-  $('#patient-table').DataTable({
-      "ajax": '{{ url(route('patients.index')) }}',
+  $('#donator-table').DataTable({
+      "ajax": '{{ url(route('donators.index')) }}',
       "method": "GET",
       columns: [
         {"data": "id"},
@@ -470,24 +352,13 @@ $(document).ready( function () {
         {"data": "age"},
         {"data": "gender"},
         {"data": "blood_type"},
+        {"data": 'nextSafeDonationDate'},
         {
           "data": null,
             "render": function (data,type, row) {
-            return '<button id="requestBtn" class="btn btn-primary" onclick="showRequestModal('+data.id+')"  value ="'+data.id+ '"><i class="bi bi-plus-circle"></i></button>'
+               return '<a  class="btn btn-primary" href ="/donators/' +row.id +'"><i class="bi bi-eye"></i></a>'
           }
         },
-        {
-          "data": null,
-          "render": function (data,type, row) {
-            return '<button id="editBtn" class="btn btn-success" onclick="showServiceEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
-          }
-        },
-        {
-          "data": null,
-            "render": function (data,type, row) {
-            return '<button id="deleteBtn" class="btn btn-danger" onclick="showPatientDelete('+data.id+')"  value="'+data.id+'"><i class="bi bi-trash"></i></button>'
-          }
-        }
         ],
           'aoColumnDefs': [{
           'bSortable': false,
@@ -495,7 +366,7 @@ $(document).ready( function () {
         }],
         'columnDefs': [
             { responsivePriority: 1, targets: 1 },
-            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7 ] },
+            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6] },
         ]
   }); 
 });

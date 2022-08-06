@@ -315,5 +315,15 @@
       }).observe(mainContainer);
     }, 200);
   }
-
 })();
+
+jQuery(function($) {
+  var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
+  $('#sidebar-nav li a').each(function() {
+    if (this.href === path) {
+      $(this).removeClass('collapsed ');
+      console.log($(this).removeClass('collapsed '));
+    $(this).addClass('active');
+   }
+  });
+ });
