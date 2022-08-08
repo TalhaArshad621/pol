@@ -58,3 +58,5 @@ Route::get('/store',[BloodBagController::class, 'index'])->name('store.index');
 
 // Campaigns
 Route::get('/campaigns',[LocationController::class, 'index'])->name('campaign.index');
+Route::get('/campaign-create/{id}',[LocationController::class,'create'])->name('campaign.create');
+Route::post('/campaign',[LocationController::class, 'store'])->name('campaign.store');

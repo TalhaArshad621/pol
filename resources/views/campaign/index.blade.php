@@ -262,48 +262,6 @@ function updateCampaign() {
   });  
 }
 
-function showPatientDelete(id){
-  $.ajax({
-      type: "GET",
-      url:  "{{ url(route('patient.get','')) }}"+ "/" +id,
-      success: function(response) {
-        if(response.code == 200) {
-          $("#deleteModal_Label").html("Delete Patient ");
-          $("#patientDeleteID").attr("value",id);
-          $("#deleteModal_UserLabel").html("Are you sure You want to Delete Patient");
-          $("#deleteModal").modal("toggle");
-        }
-      }
-  });
-}
-
-// Delete Patient
-function deletePatient(){
-  var form = $("#PatientDeleteForm").serialize();
-  $.ajax({
-    type: "DELETE",
-    url: '{{ url(route('patient.destroy','')) }}/'+ $('#patientDeleteID').val(),
-    data: form,
-    success: function(response) {
-      $('#deleteModal').modal('hide');
-      $('#PatientDeleteForm')[0].reset();
-      if(response.code == 200 ) {  
-        swal({
-            title: 'Success',
-            text: 'Patient Deleted Successfully!',
-            icon: 'success',
-            buttons: true
-        }).then(function(value) {
-          if(value === true) {
-            reloadTable();
-          }
-        });
-      }
-    }, error: function(response){
-      swal("Oops!", "Patient Not Deleted!", "error");
-    }
-  });  
-}
 // DataTables
 // DataTables
 $(document).ready( function () {    
@@ -318,7 +276,7 @@ $(document).ready( function () {
         {
           "data": null,
             "render": function (data,type, row) {
-            return '<button id="requestBtn" class="btn btn-primary"><i class="bi bi-plus-circle"></i></button>'
+            return `<a id="campaignStart" data-id = "${row.id}" href="{{asset('/campaign-create/${row.id}')}}" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>`
           }
         },
         {
