@@ -262,6 +262,23 @@ function updateCampaign() {
   });  
 }
 
+function startCampaign(id){
+  $.ajax({
+      type: "GET",
+      url:  "{{ url(route('campaign.start','')) }}"+ "/" +id,
+      success: function(response) {
+        console.log(response);
+        if(response.code == 200) {
+          alert(response.message);
+          window.location.replace("{{ url(route('campaign.create','')) }}"+ "/" +id);
+        } else {
+          alert(response.message);
+          window.location.replace("{{ url(route('campaign.create','')) }}"+ "/" +id);
+        }
+      }
+  });
+}
+
 // DataTables
 // DataTables
 $(document).ready( function () {    
@@ -276,7 +293,7 @@ $(document).ready( function () {
         {
           "data": null,
             "render": function (data,type, row) {
-            return `<a id="campaignStart" data-id = "${row.id}" href="{{asset('/campaign-create/${row.id}')}}" class="btn btn-primary"><i class="bi bi-plus-circle"></i></a>`
+            return `<a id="campaignStart" onclick="startCampaign(${row.id})"   class="btn btn-primary campaignStart"><i class="bi bi-plus-circle"></i></a>`
           }
         },
         {

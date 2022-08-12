@@ -24,7 +24,14 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Donate Blood</h5>
+                <div class="row justify-content-between">
+                    <div class="col-md-4">
+                        <h5 class="card-title">Donate Blood</h5>
+                    </div>
+                    <div class="col-md-4 pt-3">
+                        <button class="btn btn-danger" id="endCampaign" data-id="{{ $id }}">End Campaign</button>
+                    </div>
+                </div>
               <hr>
               <div id="searchDonor" class="row" style="align-items: flex-end">
                   <div class="col-md-6">
@@ -244,5 +251,22 @@
             }
         });  
         });
+
+        $("#endCampaign").on("click", function(){
+            var id = $(this).data("id");
+            $.ajax({
+                type: "GET",
+                url:  "{{ url(route('campaign.end','')) }}"+ "/" +id,
+                success: function(response) {
+                    if(response.code == 200){
+                        alert(response.message);
+                        window.location.replace("{{ url(route('campaign.index')) }}");
+                       
+                    } else{
+                        alert(response.message);
+                    }
+                }
+            });
+        })
     </script>
 @endpush

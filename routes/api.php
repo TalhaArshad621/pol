@@ -8,6 +8,7 @@ use App\Http\Controllers\API\PatientApiController;
 use App\Http\Controllers\API\RequestApiController;
 use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\UserGroupApiController;
+use App\Http\Controllers\CampaignController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,7 +52,9 @@ Route::post('/requests', [RequestApiController::class, 'store'])->name('request.
 // Donator api
 Route::get('/donators', [DonatorApiController::class, 'index'])->name('donators.index'); 
 Route::post('/donators',[DonatorApiController::class, 'store'])->name('donator.create');
-Route::get('/donator/{id}',[DonatorApiController::class, 'show'])->name('donator.get');
+Route::get('/donator/{cnic}',[DonatorApiController::class, 'show'])->name('donator.get');
+Route::get('/donators/{id}',[DonatorApiController::class, 'showDonator']);
+Route::get('/donator-info/{id}',[DonatorApiController::class, 'donatorInfo'])->name('donator.info');
 
 // Donation
 Route::get('/donation',[DonationApiController::class, 'index'])->name('donations.index');

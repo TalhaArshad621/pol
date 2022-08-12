@@ -111,6 +111,25 @@ class DonatorApiController extends Controller
             ]);
         }
     }
+    public function showDonator($id)
+    {
+        try
+        {
+            $donator = DB::table("donators")->select('*')->where('id',$id)->first();
+            return response()->json([
+                'message' => 'donator info',
+                'code' => 200,
+                'data' => $donator
+            ]);
+
+        } catch(Exception $e)
+        {
+            return response()->json([
+                'status' => '202',
+                'data' => $e
+            ]);
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -145,4 +164,28 @@ class DonatorApiController extends Controller
     {
         //
     }
+
+    /**
+     * Show donator info related to blood donation and preexam.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+     public function donatorInfo($id) 
+     {
+        try {
+            $donator_info = Donator::with(['donations','donations.preExam','donations.locations'])->where('id',$id)->first();
+            return response()->json([
+                'message' => 'Donatorn Info',
+                'code'    => 200,
+                'data'    => $donator_info
+            ]);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 202,
+                'data' => $e
+            ]);
+        }
+     }
 }
