@@ -117,8 +117,6 @@ class DonatorApiController extends Controller
         {
             $donator = DB::table("donators")->select('*')->where('id',$id)->first();
             return response()->json([
-                'message' => 'donator info',
-                'code' => 200,
                 'data' => $donator
             ]);
 
@@ -175,7 +173,7 @@ class DonatorApiController extends Controller
      public function donatorInfo($id) 
      {
         try {
-            $donator_info = Donator::with(['donations','donations.preExam','donations.locations'])->where('id',$id)->first();
+            $donator_info = Donator::with(['donations','donations.preExam','donations.locations'])->where('cnic',$id)->first();
             return response()->json([
                 'message' => 'Donatorn Info',
                 'code'    => 200,

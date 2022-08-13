@@ -174,7 +174,7 @@ $('#add-campaign').on('click', function(e) {
 
     $.ajax({
     type: "POST",
-    url: '{{ url(route('campaign.store')) }}',
+    url: '{{ url(route('campaigns.store')) }}',
     data: form,
     success: function(response) {
       $('#addNewCampaignModal').modal('hide');

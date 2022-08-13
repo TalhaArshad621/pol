@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CampaignApiController extends Controller
 {
@@ -16,9 +18,20 @@ class CampaignApiController extends Controller
     public function index()
     {
         try {
-
+            $campaign_info = DB::table('campaigns')
+            ->leftjoin('locations','locations.id','campaigns.location_id')
+            ->leftJoin('location_codes','location_codes.id','locations.lc')
+            ->select('campaigns.campaign_end','campaigns.created_at','locations.name as location_name','locations.city','location_codes.description')
+            ->whereDate('campaigns.created_at','>=',Carbon::today())
+            ->whereNull('campaigns.campaign_end')
+            ->get();
+            return response()->json([
+                'data' => $campaign_info
+            ]);
         } catch (Exception $e) {
-            
+            return response()->json([
+                'error' => $e
+            ]);
         }
     }
 

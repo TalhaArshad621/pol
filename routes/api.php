@@ -64,8 +64,8 @@ Route::get('/donation',[DonationApiController::class, 'index'])->name('donations
 Route::get('/bloodBags',[BloodBagApiController::class, 'index'])->name('bloodBag.index');
 
 // Campaign
-Route::post('/campaigns', [LocationApiController::class, 'store'])->name('campaign.store');
+Route::post('/campaigns', [LocationApiController::class, 'store'])->name('campaigns.store');
 Route::get('/campaigns', [LocationApiController::class, 'index'])->name('campaigns.index');
 Route::get('/campaigns/{id}', [LocationApiController::class, 'show'])->name('campaign.show');
 Route::put('/campaigns/{id}', [LocationApiController::class, 'update'])->name('campaign.update');
-Route::get('/campaign-info',[CampaignApiController::class,' index'])->name('campaign.info');
+Route::get('/campaign-info',[CampaignApiController::class, 'index'])->name('campaign.info');
