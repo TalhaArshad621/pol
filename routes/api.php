@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\BloodBagApiController;
+use App\Http\Controllers\API\CampaignApiController;
 use App\Http\Controllers\API\DonationApiController;
 use App\Http\Controllers\API\DonatorApiController;
 use App\Http\Controllers\API\LocationApiController;
@@ -67,3 +68,4 @@ Route::post('/campaigns', [LocationApiController::class, 'store'])->name('campai
 Route::get('/campaigns', [LocationApiController::class, 'index'])->name('campaigns.index');
 Route::get('/campaigns/{id}', [LocationApiController::class, 'show'])->name('campaign.show');
 Route::put('/campaigns/{id}', [LocationApiController::class, 'update'])->name('campaign.update');
+Route::get('/campaign-info',[CampaignApiController::class,' index'])->name('campaign.info');
