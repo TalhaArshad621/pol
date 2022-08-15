@@ -58,17 +58,19 @@ class DonatorApiController extends Controller
             'contact_num' => 'required',
             'cnic'    => 'required|unique:donators',
             'gender' => 'required',
-            'blood_type' => 'required'
+            'blood_type' => 'required',
+            'app'    => 'required'
         ]);
         try {
             $donator = new Donator;
-            $donator->name = $request->name;
-            $donator->address = $request->address;
-            $donator->number = $request->contact_num;
-            $donator->cnic = $request->cnic;
-            $donator->gender = $request->gender;
-            $donator->age = $request->age;
+            $donator->name       = $request->name;
+            $donator->address    = $request->address;
+            $donator->number     = $request->contact_num;
+            $donator->cnic       = $request->cnic;
+            $donator->gender     = $request->gender;
+            $donator->age        = $request->age;
             $donator->blood_type = $request->blood_type;
+            $donator->app        = $request->app;
             $donator->save();
             if ($donator) {
                 DB::commit();

@@ -2,16 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Donation;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
-use Exception;
 
-class DonationApiController extends Controller
+class ReportApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,24 +14,7 @@ class DonationApiController extends Controller
      */
     public function index()
     {
-        try {
-            $donation = DB::table('donations')
-                ->leftJoin('donators', 'donations.donator_id', '=', 'donators.id')
-                ->leftJoin('locations','locations.id','=','donations.location_id')
-                ->select('donations.id','donations.quantity','donations.donation_type','donators.name','donators.blood_type','locations.name as location')
-                ->get();
-                return response()->json([
-                'message' => 'donations list',
-                'code'    => 200,
-                'data'    => $donation
-            ]);
-        } catch (Exception $e) {
-            return response()->json([
-                'message' => 'error',
-                'code'    => 200,
-                'data'    => $e->getMessage()
-            ]);
-        }
+        //
     }
 
     /**
@@ -58,7 +35,7 @@ class DonationApiController extends Controller
      */
     public function store(Request $request)
     {
-    //    
+        //
     }
 
     /**

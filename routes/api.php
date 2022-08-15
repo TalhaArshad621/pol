@@ -69,3 +69,7 @@ Route::get('/campaigns', [LocationApiController::class, 'index'])->name('campaig
 Route::get('/campaigns/{id}', [LocationApiController::class, 'show'])->name('campaign.show');
 Route::put('/campaigns/{id}', [LocationApiController::class, 'update'])->name('campaign.update');
 Route::get('/campaign-info',[CampaignApiController::class, 'index'])->name('campaign.info');
+
+// Dashboard Report 
+
+// Route::get('/line-chart',[ReportCo])
