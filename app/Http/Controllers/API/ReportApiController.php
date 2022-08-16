@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class ReportApiController extends Controller
 {
@@ -14,7 +17,24 @@ class ReportApiController extends Controller
      */
     public function index()
     {
-        //
+        $donations = DB::table('donations')
+        ->select(DB::raw('COUNT(id) as count '))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get();
+        $donators = DB::table('donators')
+        ->select(DB::raw('COUNT(id) as count'))
+        ->groupBy(DB::raw('DATE(created_at)'))
+        ->get()->toArray();
+        foreach($donations as $key => $value) {
+            $donation[]=$value->count;
+        }
+        foreach($donators as $key => $value) {
+            $donator[]=$value->count;
+        }
+        return response()->json([
+            'donation' => $donation,
+            'donators' => $donator  
+        ]);
     }
 
     /**

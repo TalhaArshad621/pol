@@ -22,7 +22,6 @@ class CampaignApiController extends Controller
             ->leftjoin('locations','locations.id','campaigns.location_id')
             ->leftJoin('location_codes','location_codes.id','locations.lc')
             ->select('campaigns.campaign_end','campaigns.created_at','locations.name as location_name','locations.city','location_codes.description')
-            ->whereDate('campaigns.created_at','>=',Carbon::today())
             ->whereNull('campaigns.campaign_end')
             ->get();
             return response()->json([

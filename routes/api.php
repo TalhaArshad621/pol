@@ -6,6 +6,7 @@ use App\Http\Controllers\API\DonationApiController;
 use App\Http\Controllers\API\DonatorApiController;
 use App\Http\Controllers\API\LocationApiController;
 use App\Http\Controllers\API\PatientApiController;
+use App\Http\Controllers\API\ReportApiController;
 use App\Http\Controllers\API\RequestApiController;
 use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\UserGroupApiController;
@@ -72,4 +73,4 @@ Route::get('/campaign-info',[CampaignApiController::class, 'index'])->name('camp
 
 // Dashboard Report 
 
-// Route::get('/line-chart',[ReportCo])
+Route::get('/line-chart',[ReportApiController::class, 'index'])->name('line.chart');
