@@ -144,6 +144,7 @@
           <!-- Multi Columns Form -->
           <form class="row g-3" id="donator-form">
             @csrf
+            <input type="hidden" name="app" value="0">
             <div class="col-md-12">
               <label for="inputName5" class="form-label">Name</label>
               <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">

@@ -72,5 +72,5 @@ Route::put('/campaigns/{id}', [LocationApiController::class, 'update'])->name('c
 Route::get('/campaign-info',[CampaignApiController::class, 'index'])->name('campaign.info');
 
 // Dashboard Report 
-
 Route::get('/line-chart',[ReportApiController::class, 'index'])->name('line.chart');
+Route::get('/blood-bag-report',[ReportApiController::class ,'bloodBag'])->name('bloodBag-report');

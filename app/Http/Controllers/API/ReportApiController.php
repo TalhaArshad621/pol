@@ -37,6 +37,26 @@ class ReportApiController extends Controller
         ]);
     }
 
+    public function bloodBag() 
+    {
+       $missing_blood_types = DB::table('blood_types')
+        ->select('blood_types.blood_type')
+        ->whereNotExists(function ($query) {
+            $query->from('blood_bags')
+                ->select('blood_type')
+                ->where('blood_bags.blood_type','=',DB::raw('blood_types.blood_type'));
+        })
+        ->get();
+
+        $alert_quantity = DB::table('blood_bags')
+        ->select('blood_type','quantity_cc')
+        ->where('quantity_cc', '<', 10 )
+        ->get();
+        return response()->json([
+            'missing_blood_type' => $missing_blood_types,
+            'alert_quantity' => $alert_quantity
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *

@@ -63,3 +63,5 @@ Route::get('/campaign-create/{id}',[LocationController::class,'create'])->name('
 Route::post('/campaign',[LocationController::class, 'store'])->name('campaign.store');
 Route::get('/campaign-start/{id}',[CampaignController::class,'create'])->name('campaign.start');
 Route::get('/campaign-end/{id}',[CampaignController::class,'endCampaign'])->name('campaign.end');
+
+// Reports
