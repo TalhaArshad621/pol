@@ -57,6 +57,7 @@ Route::post('/donators',[DonatorApiController::class, 'store'])->name('donator.c
 Route::get('/donator/{cnic}',[DonatorApiController::class, 'show'])->name('donator.get');
 Route::get('/donators/{id}',[DonatorApiController::class, 'showDonator']);
 Route::get('/donator-info/{id}',[DonatorApiController::class, 'donatorInfo'])->name('donator.info');
+Route::post('/transfer-points',[DonatorApiController::class, 'transferPoints']);
 
 // Donation
 Route::get('/donation',[DonationApiController::class, 'index'])->name('donations.index');

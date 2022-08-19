@@ -72,6 +72,7 @@ class DonationController extends Controller
             $donation->save();
             if ($donation) {
                 $getNextDonationDate = DB::table('donation_types')->select('frequency_days')->where('type','=',$request->donation_type)->first();
+                $this->incrementPoints($request->donor_id);
                 $date = Carbon::now()->addDays($getNextDonationDate->frequency_days);
                $updateDonator = DB::table('donators')
                 ->where('id', $request->donor_id)
@@ -153,5 +154,13 @@ class DonationController extends Controller
     protected function checkBloodBag($blood_type, $donation_type){
         $blood_bag = DB::table('blood_bags')->select("*")->where('blood_type', '=', $blood_type)->where('donation_type', '=', $donation_type)->first();
         return $blood_bag;
+    }
+
+    protected function incrementPoints($id) 
+    {
+        $result = Donator::where('id',$id)
+                ->where('app',1)
+                ->increment('points', 50);
+        return $result;
     }
 }

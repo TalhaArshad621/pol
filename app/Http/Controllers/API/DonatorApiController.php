@@ -188,4 +188,38 @@ class DonatorApiController extends Controller
             ]);
         }
      }
+
+     public function transferPoints(Request $request) 
+     {
+        try {
+            DB::beginTransaction();
+            $sender   = $request->sender;
+            $points   = $request->points;
+            $reciever = $request->receiver;
+            
+            $sender= DB::table('donators')
+            ->where('id',$sender)
+            ->where('app', 1)
+            ->decrement('points',$points);
+
+            $reciever = DB::table('donators')
+            ->where('id',$reciever)
+            ->where('app', 1)
+            ->increment('points',$points);
+            
+            DB::commit();
+            return response()->json([
+                'sender' => $sender,
+                'reciever' => $reciever,
+                'error' => false
+            ]);
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'error' => true,
+                'message' => $e->getMessage()
+            ]);
+        }
+     }
 }
