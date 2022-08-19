@@ -347,7 +347,7 @@
 @push('js')
 <script>
  $(document).ready(function () {
-  var color = ['text-success','text-danger', 'text-primary' , 'text-info'];
+  var color = ['text-success','text-danger', 'text-primary' , 'text-info', 'text-warning', 'text-muted'];
     $.ajax({
         type: "GET",
         url:  "{{ url(route('bloodBag-report')) }}",

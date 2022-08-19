@@ -198,12 +198,12 @@ class DonatorApiController extends Controller
             $reciever = $request->receiver;
             
             $sender= DB::table('donators')
-            ->where('id',$sender)
+            ->where('cnic',$sender)
             ->where('app', 1)
             ->decrement('points',$points);
 
             $reciever = DB::table('donators')
-            ->where('id',$reciever)
+            ->where('cnic',$reciever)
             ->where('app', 1)
             ->increment('points',$points);
             
