@@ -75,3 +75,7 @@ Route::get('/campaign-info',[CampaignApiController::class, 'index'])->name('camp
 // Dashboard Report 
 Route::get('/line-chart',[ReportApiController::class, 'index'])->name('line.chart');
 Route::get('/blood-bag-report',[ReportApiController::class ,'bloodBag'])->name('bloodBag-report');
+
+// Report
+
+Route::get('/report',[ReportApiController::class, 'getReport'])->name('get.report');

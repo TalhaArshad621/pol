@@ -98,7 +98,7 @@ class DonatorApiController extends Controller
     {
         try
         {
-            $donator = DB::table("donators")->select('id','name','address','number','gender','age','blood_type')->where('cnic',$id)->first();
+            $donator = DB::table("donators")->select('id','name','address','number','gender','age','blood_type','nextSafeDonationDate')->where('cnic',$id)->first();
             return response()->json([
                 'message' => 'donator info',
                 'code' => 200,

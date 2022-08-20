@@ -204,6 +204,10 @@ $(document).ready( function () {
           'bSortable': false,
           'aTargets': ['nosort']
         }],
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
         'columnDefs': [
             { responsivePriority: 1, targets: 1 },
             { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6 ] },

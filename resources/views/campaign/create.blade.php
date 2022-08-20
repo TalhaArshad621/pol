@@ -207,11 +207,18 @@
                 url:  "{{ url(route('donator.get','')) }}"+ "/" +cnic,
                 success: function(response) {
                     if(response.data){
+                      var today = new Date().toISOString().slice(0, 10)
+                      
+                      if(response.data.nextSafeDonationDate > today) {
+                        alert("Safe Donation Date is " + response.data.nextSafeDonationDate);
+                        location.reload();
+                      } else {
                         $("#searchDonor").css("display",'none');
                         $("#donorFound").removeClass("none");
                         $("#donor_name").attr("value",response.data.name);
                         $("#blood_type").attr("value",response.data.blood_type);
                         $("#donor_id").attr("value", response.data.id);
+                      }
                     } else{
                         alert("donator not found");
                         $('#addNewDonatorModal').modal('show'); 

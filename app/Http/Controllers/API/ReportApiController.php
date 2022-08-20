@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 
 class ReportApiController extends Controller
@@ -56,6 +57,27 @@ class ReportApiController extends Controller
             'missing_blood_type' => $missing_blood_types,
             'alert_quantity' => $alert_quantity
         ]);
+    }
+
+    public function getReport () {
+        try {
+            $report = DB::table('donations')
+            ->leftJoin('locations','donations.location_id','=','locations.id')
+            ->leftJoin('donators','donations.donator_id','=','donators.id')
+            ->select('donators.blood_type', DB::raw("SUM(donations.quantity) as quantity"), 'locations.name', DB::raw("DATE(donations.created_at) as date"))
+            ->groupBy('donations.location_id', DB::raw('DATE(donations.created_at)'), 'donators.blood_type')
+            ->get();
+            return response()->json([
+                'message' => 'Blood bag List',
+                'code' => 200,
+                'data' => $report
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e
+            ]);
+        }
     }
     /**
      * Show the form for creating a new resource.

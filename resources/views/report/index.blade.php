@@ -8,7 +8,7 @@
     <div class="col p-md-0">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/home">Dashboard</a></li>
-            <li class="breadcrumb-item active"><a href="/store">Blood Bags</a></li>
+            <li class="breadcrumb-item active"><a href="/report">Report</a></li>
         </ol>
     </div>
 </div>
@@ -17,24 +17,24 @@
         <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Blood Bags Table</h5>
+              <h5 class="card-title">Report</h5>
              
               <!-- Table with stripped rows -->
-              <table id="store-table" class="table">
+              <table id="report-table" class="table">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Donation type</th>
                         <th>Blood Type</th>
                         <th>Quantity</th>
+                        <th>Location</th>
+                        <th>date</th>
                     </tr>
                 </thead>
                 <tfoot>
                     <tr>
-                        <th>Id</th>
-                        <th>Donation type</th>
                         <th>Blood Type</th>
                         <th>Quantity</th>
+                        <th>Location</th>
+                        <th>date</th>
                     </tr>
                 </tfoot>
               </table>
@@ -55,14 +55,14 @@
 <script>
 // DataTables
 $(document).ready( function () {    
-  $('#store-table').DataTable({
-      "ajax": '{{ url(route('bloodBag.index')) }}',
+  $('#report-table').DataTable({
+      "ajax": '{{ url(route('get.report')) }}',
       "method": "GET",
       columns: [
-        {"data": "id"},
-        {"data": "donation_type"},
         {"data": "blood_type"},
-        {"data": "quantity_cc"},
+        {"data": "quantity"},
+        {"data": "name"},
+        {"data": "date"},
         ],
           'aoColumnDefs': [{
           'bSortable': false,
@@ -77,6 +77,7 @@ $(document).ready( function () {
             { className: 'text-center', targets: [0, 1, 2, 3] },
         ]
   }); 
+
 });
 </script>
 

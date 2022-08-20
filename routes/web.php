@@ -11,6 +11,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\DonatorController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,3 +66,4 @@ Route::get('/campaign-start/{id}',[CampaignController::class,'create'])->name('c
 Route::get('/campaign-end/{id}',[CampaignController::class,'endCampaign'])->name('campaign.end');
 
 // Reports
+Route::get('/report',[ReportController::class, 'index'])->name('report.index');
