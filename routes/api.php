@@ -39,6 +39,8 @@ Route::delete('/users/{id}', [UserApiController::class, 'destroy'])->name('users
 // User Group Api
 Route::get('/userGroups', [UserGroupApiController::class, 'index'])->name('userGroup.index');
 Route::post('/userGroups', [UserGroupApiController::class,'store'])->name('userGroup.create');
+Route::get('/userGroup/{id}',[UserGroupApiController::class,'show'])->name('userGroup.get');
+Route::put('/usergroup/{id}',[UserGroupApiController::class, 'update'])->name('usergroup.update');
 
 // Patient Api
 Route::get('/patients', [PatientApiController::class, 'index'])->name('patients.index');

@@ -5,10 +5,10 @@
         @foreach ($userPermission as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -24,10 +24,10 @@
         @foreach ($userGroupPermission as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -41,10 +41,10 @@
         @foreach ($patient as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -58,10 +58,10 @@
         @foreach ($hospitalRequest as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -75,10 +75,10 @@
         @foreach ($bloodBag as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -92,10 +92,10 @@
         @foreach ($donator as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -109,10 +109,10 @@
         @foreach ($donation as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -126,10 +126,10 @@
         @foreach ($donationRequest as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -143,10 +143,10 @@
         @foreach ($campaign as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">
@@ -160,10 +160,10 @@
         @foreach ($report as $key => $permission )
       <div class="form-check">
           <input 
-          class="form-check-input" 
+          class="form-check-input {{ $permission->module . 'Edit'}}" 
           type="checkbox" 
           id="{{ $permission->module }}" 
-          name="{{ $permission->module }}[]" 
+          name="{{ $permission->module . 'Edit'}}[]" 
           value="{{ $permission->id }}"
           >
           <label class="form-check-label" for="userPermission">

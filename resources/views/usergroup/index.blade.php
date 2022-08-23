@@ -28,7 +28,6 @@
                         <tr>
                             <th>Id</th>
                             <th>User Group</th>
-                            <th>view</th>
                             <th>edit</th>
                             <th>delete</th>
                         </tr>
@@ -37,7 +36,6 @@
                         <tr>
                             <th>Id</th>
                             <th>User Group</th>
-                            <th>view</th>
                             <th>edit</th>
                             <th>delete</th>
                         </tr>
@@ -74,7 +72,38 @@
       </div>
       <div class="modal-footer">
           <button id="addusergroup" type="button" class="btn btn-primary">Submit</button>
-          <button type="button" class="btn btn-dark" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div><!-- End Large Modal-->
+
+<div class="modal fade" id="editUserGroupModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit User Group</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Multi Columns Form -->
+        <form class="row g-3" id="userGroupEditForm">
+          @csrf
+          <input type="hidden" name="userGroupEditID" id="userGroupEditID">
+          <div class="col-md-6">
+            <label for="inputName5" class="form-label">Name</label>
+            <input type="text" class="form-control" id="userGroupEditName" name="userGroupEditName" placeholder="Enter Name">
+          </div>
+          <div class="col-md-6">
+            <label for="inputslug5" class="form-label">slug</label>
+            <input type="text" class="form-control" id="userGroupEditSlug" name="userGroupEditSlug" placeholder="Enter slug">
+          </div>
+          @include('usergroup.permissionEdit',$permissions=[])
+        </form><!-- End Multi Columns Form -->
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="updateUserGroup()">Submit</button>
+          <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -86,6 +115,29 @@
 
 
 <script>
+
+$('.patientEdit,  .requestEdit, .bloodbagEdit, .donatorEdit, .donationEdit, .UserEdit, .usergroupEdit, .donationRequestEdit, .campaignEdit, .reportEdit').on('change', function(e) {
+    let className = '.' + ($(this).attr('class'))+'SelectAll';
+   ($( '.' + ($(this).attr('class')) +':checked').length == $( '.' + ($(this).attr('class'))).length) ?  $(className).prop('checked',true) : $(className).prop('checked',false);  
+});
+
+// tablereload
+function reloadTable(){
+  $('#userGroup-table').DataTable().ajax.reload(null,false)
+}
+
+// slug
+function convertToSlug(Text) {
+  return Text.toLowerCase()
+             .replace(/ /g, '-')
+             .replace(/[^\w-]+/g, '');
+}
+
+$("#userGroupname").on("input", function (){
+  var userGroup = $("#userGroupname").val();
+  $("#slug").attr("value", convertToSlug(userGroup));
+})
+
 //add usergroup
 $('#addusergroup').on('click', function(e) {
     e.preventDefault();
@@ -100,7 +152,7 @@ $('#addusergroup').on('click', function(e) {
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
       $('#userGroupAddForm')[0].reset();
-        if(response.status == 200) {
+        if(response.code == 200) {
             swal({
                 title: 'Success',
                 text: 'User Group Added Successfully!',
@@ -118,6 +170,65 @@ $('#addusergroup').on('click', function(e) {
   });  
 });
 
+//get User Group info ,fill the edit modal form,
+function showUserGroupEdit(id){
+  $.ajax({
+      type: "GET",
+      url:  "{{ url(route('userGroup.get','')) }}"+ "/" +id,
+      success: function(response) {
+        if(response.code == 200) {
+          $("#userGroupEditID").attr("value",id);
+          $("#userGroupEditName").attr("value",response.data.name);
+          $("#userGroupEditSlug").attr("value",response.data.slug);
+          const all_permissions = [".patientEdit", ".requestEdit", ".bloodbagEdit",".donatorEdit",".donationEdit",".UserEdit",".usergroupEdit",".donationRequestEdit",".campaignEdit",".reportEdit"];
+          $(all_permissions).map(function(index){
+              let sub_permissions = all_permissions[index];
+              $(sub_permissions).map(function(index,el){
+               if(response.permissions.includes(Number(el.value)) ){
+                 let n  = $(sub_permissions)[index];
+                 $(n).prop("checked",true);
+               }
+              });
+            $(all_permissions[index]+':checked').length == $(all_permissions[index]).length ? $(all_permissions[index]+ 'SelectAll' ).prop('checked',true) :  $(all_permissions[index]+ 'SelectAll' ).prop('checked',false) ;
+          });
+          $("#editUserGroupModal").modal("toggle");
+        }
+      }
+  });
+}
+
+//update user group
+function updateUserGroup() {
+  var form = $("#userGroupEditForm").serialize();
+  $.ajax({
+    type: "PUT",
+    url: '{{ url(route('usergroup.update','')) }}/' + $('#userGroupEditID').val(),
+    data: form,
+    success: function(response) {   
+      if(response.code == 200){
+        $("#editUserGroupModal").modal("hide");
+        $('#userGroupEditForm')[0].reset();
+        swal({
+                title: 'Success',
+                text: 'User Group Updated Successfully!',
+                icon: 'success',
+                buttons: true
+            }).then(function(value) {
+                if(value === true) {                    
+                  reloadTable();
+                }
+            });
+      } else{
+
+        swal("Oops!", "Dubplicate information... User Group Not Updated!", "error");
+      }
+    },
+    error: function(response){
+      swal("Oops!", "User Group Not Updated!", "error");
+    }
+  });  
+}
+
 // DataTables
 $(document).ready( function () {    
   $('#userGroup-table').DataTable({
@@ -128,14 +239,8 @@ $(document).ready( function () {
         {"data": "name"},
         {
           "data": null,
-            "render": function (data,type, row) {
-            return '<button id="deleteBtn" class="btn btn-success"  value ="'+data.id+ '"><i class="bi bi-eye-fill"></i></button>'
-          }
-        },
-        {
-          "data": null,
           "render": function (data,type, row) {
-            return '<button id="editBtn" class="btn btn-success" onclick="showEmployeeEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
+            return '<button id="editBtn" class="btn btn-success" onclick="showUserGroupEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
           }
         },
         {

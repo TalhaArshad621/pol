@@ -34,7 +34,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="/donators">
           <i class="bx bxs-donate-heart"></i>
-          <span>donators</span>
+          <span>Donators</span>
         </a>
       </li><!-- End Register Page Nav -->
 
@@ -72,12 +72,12 @@
         <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
             <a href="/user">
-              <i class="bi bi-circle"></i><span>users</span>
+              <i class="bi bi-circle"></i><span>Users</span>
             </a>
           </li>
           <li>
             <a href="/usergroup">
-              <i class="bi bi-circle"></i><span>user group</span>
+              <i class="bi bi-circle"></i><span>User Group</span>
             </a>
           </li>
         </ul>
