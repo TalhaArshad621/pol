@@ -29,8 +29,6 @@
                         <th>Blood Type</th>
                         <th>level</th>
                         <th>Status</th>
-                        <th>edit</th>
-                        <th>delete</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -41,8 +39,6 @@
                         <th>Blood Type</th>
                         <th>level</th>
                         <th>Status</th>
-                        <th>edit</th>
-                        <th>delete</th>
                     </tr>
                 </tfoot>
               </table>
@@ -85,18 +81,6 @@ $(document).ready( function () {
             }
           }
         },
-        {
-          "data": null,
-          "render": function (data,type, row) {
-            return '<button id="editBtn" class="btn btn-success" onclick="showServiceEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-pen"></i></button>'
-          }
-        },
-        {
-          "data": null,
-            "render": function (data,type, row) {
-            return '<button id="deleteBtn" class="btn btn-danger" onclick="showPatientDelete('+data.id+')"  value="'+data.id+'"><i class="bi bi-trash"></i></button>'
-          }
-        }
         ],
           'aoColumnDefs': [{
           'bSortable': false,
@@ -104,7 +88,7 @@ $(document).ready( function () {
         }],
         'columnDefs': [
             { responsivePriority: 1, targets: 1 },
-            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5, 6, 7 ] },
+            { className: 'text-center', targets: [0, 1, 2, 3, 4, 5] },
         ]
   }); 
 });

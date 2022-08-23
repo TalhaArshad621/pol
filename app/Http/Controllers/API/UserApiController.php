@@ -78,6 +78,51 @@ class UserApiController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+            $validatedData = $request->validate([
+                'userEditID' => 'required',
+                'userEditName' => 'required | max:255',
+                'userEditEmail' => 'required |unique:users,email,' . $id,
+                'edit_role_id' => 'required'
+
+            ]);
+            if ($validatedData) {
+                try {
+                    $user = User::find($request->userEditID);
+                    $user->name = $request->userEditName;
+                    $user->email = $request->userEditEmail;
+                    $user->syncRoles($request->edit_role_id);
+                    $user->save();
+
+                    if ($user) {
+                        DB::commit();
+                        return response()->json([
+                            "message" => "user Information Updated",
+                            "code" => 200,
+                            "data" => [
+                                "id" => $user->id,
+                                "name" => $user->name
+                            ]
+                        ]);
+                    }
+                } catch (Exception $e) {
+                    DB::rollBack();
+                    return response()->json([
+                        "message" => "incorrect Input " . $e,
+                    ]);
+                }
+            }
+        } catch (Exception $e) {
+            DB::rollback();
+            return response()->json([
+                "message" => $e,
+            ]);
+        }
+    }
+
     public function destroy($id){
         DB::beginTransaction();
         try {

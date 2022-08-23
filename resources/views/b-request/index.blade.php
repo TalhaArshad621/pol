@@ -61,6 +61,19 @@
 
 <script>
 
+function approveRequest(id)
+{
+  $.ajax({
+      type: "GET",
+      url:  "{{ url(route('bbRequest.get','')) }}"+ "/" +id,
+      success: function(response) {
+        if(response.code == 200) {
+          alert(response.data.message);
+        }
+      }
+  });
+}
+
 // DataTables
 $(document).ready( function () {    
   $('#request-table').DataTable({
@@ -86,7 +99,11 @@ $(document).ready( function () {
         {
           "data": null,
           "render": function (data,type, row) {
-            return '<button id="editBtn" class="btn btn-success" onclick="showServiceEdit('+data.id+')" value="'+data.id+'" ><i class="bi bi-check"></i></button>'
+            if(row['status'] == 0){
+              return '<button id="editBtn" class="btn btn-success" onclick="approveRequest('+data.id+')" value="'+data.id+'" ><i class="bi bi-check"></i></button>'
+            } else {
+              return '<button id="editBtn" class="btn btn-dark" disabled><i class="bi bi-check"></i></button>'
+            }
           }
         }
         ],

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\BBRequestApiController;
 use App\Http\Controllers\API\BloodBagApiController;
 use App\Http\Controllers\API\CampaignApiController;
 use App\Http\Controllers\API\DonationApiController;
@@ -35,6 +36,7 @@ Route::get('/users', [UserApiController::class, 'index'])->name('users.index');
 Route::get('/users/{id}', [UserApiController::class, 'show'])->name('users.get');
 Route::post('/users', [UserApiController::class, 'store'])->name('user.create');
 Route::delete('/users/{id}', [UserApiController::class, 'destroy'])->name('users.destroy');
+Route::put('/users/{id}',[UserApiController::class, 'update'])->name('user.update');
 
 // User Group Api
 Route::get('/userGroups', [UserGroupApiController::class, 'index'])->name('userGroup.index');
@@ -63,6 +65,9 @@ Route::post('/transfer-points',[DonatorApiController::class, 'transferPoints']);
 
 // Donation
 Route::get('/donation',[DonationApiController::class, 'index'])->name('donations.index');
+
+// Donation Request
+Route::get('/bb-request/{id}',[BBRequestApiController::class, 'show'])->name('bbRequest.get');
 
 // Blood Bags 
 Route::get('/bloodBags',[BloodBagApiController::class, 'index'])->name('bloodBag.index');
